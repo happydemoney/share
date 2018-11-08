@@ -7,13 +7,13 @@
     了解 HTTP方法
     了解 HTTP状态码
 
-- [Web 及网络基础](https://github.com/happydemoney/share/blob/master/HTTP/Share.md#web-%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80)  
+- [Web 及网络基础](./Share.md#web-%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80)  
   - [HTTP的诞生]()
   - [网络基础 TCP/IP]()
   - [与 HTTP 关系密切的协议 : IP、TCP 和 DNS]()
   - [各种协议与 HTTP 协议的关系]()
   - [URI 和 URL]()
-- [HTTP 协议基础](https://github.com/happydemoney/share/blob/master/HTTP/Share.md#http-%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80)
+- [HTTP 协议基础](./Share.md#http-%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80)
   - [HTTP 协议用于客户端和服务器端之间的通信]()
   - [通过请求和响应的交换达成通信]()
   - [HTTP 是不保存状态的协议]()
@@ -21,7 +21,7 @@
   - [告知服务器意图的 HTTP 方法]()
   - [使用方法下达命令]()
   - [持久连接节省通信量]()
-- [返回结果的 HTTP 状态码]()
+- [返回结果的 HTTP 状态码](./Share.md#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E7%9A%84-http-%E7%8A%B6%E6%80%81%E7%A0%81)
   - [状态码告知从服务器端返回的请求结果]()
   - [2XX 成功]()
   - [3XX 重定向]()
