@@ -2,7 +2,10 @@
 
 *分享目的：*
     
-    概述Web 是建立在何种技术之上，以及 HTTP协议是如何诞生并发展的。
+    了解 Web 是建立在何种技术之上，以及 HTTP协议是如何诞生并发展的。
+    了解 HTTP请求报文和响应报文基本结构
+    了解 HTTP方法
+    了解 HTTP状态码
 
 ##  Web 及网络基础
 
@@ -106,7 +109,7 @@ http://www.ietf.org/rfc/rfc2616.txt
 
 ![TCP/IP](./images/tcp-ip-protocols.jpg)
 
-**图：TCP/IP 是互联网相关的各类协议族的总称**
+*图：TCP/IP 是互联网相关的各类协议族的总称*
 
 &emsp;&emsp;协议中存在各式各样的内容。从电缆的规格到 IP 地址的选定方法、寻找异地用户的方法、双方建立通信的顺序，以及 Web 页面显示需要处理的步骤，等等。
 
@@ -331,7 +334,7 @@ urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
 ![http-client-server-role](./images/http-client-server-role.jpg)
 
-**图：应用 HTTP 协议时，必定是一端担任客户端角色，另一端担任服务器端角色**
+*图：应用 HTTP 协议时，必定是一端担任客户端角色，另一端担任服务器端角色*
 
 &emsp;&emsp;在两台计算机之间使用 HTTP 协议通信时，在一条通信线路上必定有一端是客户端，另一端则是服务器端。
 
@@ -340,7 +343,8 @@ urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 ### 通过请求和响应的交换达成通信
 
 ![http-req-res-1](./images/http-req-res-1.jpg)
-**图：请求必定由客户端发出，而服务器端回复响应**
+
+*图：请求必定由客户端发出，而服务器端回复响应*
 
 &emsp;&emsp;HTTP 协议规定，请求从客户端发出，最后服务器端响应该请求并返回。换句话说，肯定是先从客户端开始建立通信的，服务器端在没有接收到请求之前不会发送响应。
 
@@ -360,7 +364,8 @@ Host: hackr.jp
 &emsp;&emsp;请求报文是由请求方法、请求 URI、协议版本、可选的请求首部字段和内容实体构成的。
 
 ![http-req-res-3](./images/http-req-res-3.jpg)
-**图：请求报文的构成**
+
+*图：请求报文的构成*
 
 &emsp;&emsp;请求首部字段及内容实体稍后会作详细说明。接下来，我们继续讲解。接收到请求的服务器，会将请求内容的处理结果以响应的形式返回。
 
@@ -383,14 +388,16 @@ Content-Type: text/html
 &emsp;&emsp;响应报文基本上由协议版本、状态码（表示请求成功或失败的数字代码）、用以解释状态码的原因短语、可选的响应首部字段以及实体主体构成。稍后我们会对这些内容进行详细说明。
 
 ![http-req-res-4](./images/http-req-res-4.jpg)
-**图：响应报文的构成**
+
+*图：响应报文的构成*
 
 ### HTTP 是不保存状态的协议
 
 &emsp;&emsp;HTTP 是一种不保存状态，即无状态（stateless）协议。HTTP 协议自身不对请求和响应之间的通信状态进行保存。也就是说在 HTTP 这个级别，协议对于发送过的请求或响应都不做持久化处理。
 
 ![http-stateless](./images/http-stateless.jpg)
-**图：HTTP 协议自身不具备保存之前发送过的请求或响应的功能**
+
+*图：HTTP 协议自身不具备保存之前发送过的请求或响应的功能*
 
 &emsp;&emsp;使用 HTTP 协议，每当有新的请求发送时，就会有对应的新响应产生。协议本身并不保留之前一切的请求或响应报文的信息。这是**为了更快地处理大量事务，确保协议的可伸缩性**，而特意把 HTTP 协议设计成如此简单的。
 
@@ -401,7 +408,8 @@ Content-Type: text/html
 ### 使用 Cookie 的状态管理
 
 ![http-cookie-1](./images/http-cookie-1.jpg)
-**图：如果让服务器管理全部客户端状态则会成为负担**
+
+*图：如果让服务器管理全部客户端状态则会成为负担*
 
 &emsp;&emsp;Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。
 
@@ -493,6 +501,7 @@ HEAD 方法和 GET 方法一样，只是不返回报文主体部分。用于确�
 
 
 ![http-method-head](./images/http-method-head.jpg)
+
 *图：和 GET 一样，但不返回报文主体*
 
 **使用 HEAD 方法的请求·响应的例子**
