@@ -7,6 +7,28 @@
     了解 HTTP方法
     了解 HTTP状态码
 
+- [Web 及网络基础](https://github.com/happydemoney/share/blob/master/HTTP/Share.md#web-%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80)  
+  - [HTTP的诞生]()
+  - [网络基础 TCP/IP]()
+  - [与 HTTP 关系密切的协议 : IP、TCP 和 DNS]()
+  - [各种协议与 HTTP 协议的关系]()
+  - [URI 和 URL]()
+- [HTTP 协议基础](https://github.com/happydemoney/share/blob/master/HTTP/Share.md#http-%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80)
+  - [HTTP 协议用于客户端和服务器端之间的通信]()
+  - [通过请求和响应的交换达成通信]()
+  - [HTTP 是不保存状态的协议]()
+  - [使用 Cookie 的状态管理]()
+  - [告知服务器意图的 HTTP 方法]()
+  - [使用方法下达命令]()
+  - [持久连接节省通信量]()
+- [返回结果的 HTTP 状态码]()
+  - [状态码告知从服务器端返回的请求结果]()
+  - [2XX 成功]()
+  - [3XX 重定向]()
+  - [4XX 客户端错误]()
+  - [5XX 服务器错误]()
+---
+
 ##  Web 及网络基础
 
 ### HTTP的诞生
@@ -631,3 +653,97 @@ UNLINE | 断开连接关系 | 1.0
 *图：不等待响应，直接发送下一个请求*
 
 &emsp;&emsp;比如，当请求一个包含 10 张图片的 HTML Web 页面，与挨个连接相比，用持久连接可以让请求更快结束。而管线化技术则比持久连接还要快。请求数越多，时间差就越明显。
+
+##  返回结果的 HTTP 状态码
+
+    HTTP 状态码负责表示客户端 HTTP 请求的返回结果、标记服务器端的处理是否正常、通知出现的错误等工作。
+
+### 状态码告知从服务器端返回的请求结果
+
+&emsp;&emsp;状态码的职责是当客户端向服务器端发送请求时，描述返回的请求结果。借助状态码，用户可以知道服务器端是正常处理了请求，还是出现了错误。
+
+**状态码的类别**
+
+状态码 | 类别 | 原因短语
+---|---|---
+1XX | Informational（信息性状态码） | 接收的请求正在处理
+2XX | Success（成功状态码）| 请求正常处理完毕
+3XX | Redirection（重定向状态码）| 需要进行附加操作以完成请求
+4XX | Client Error（客户端错误状态码）|	服务器无法处理请求
+5XX | Server Error（服务器错误状态码）|	服务器处理请求出错
+
+&emsp;&emsp;只要遵守状态码类别的定义，即使改变 RFC2616 中定义的状态码，或服务器端自行创建状态码都没问题。
+
+### 2XX 成功
+
+    2XX 的响应结果表明请求被正常处理了。
+
+1. **200 OK**
+
+![http-status-200](./images/http-status-200.jpg)
+
+2. **204 No Content**
+
+![http-status-204](./images/http-status-204.jpg)
+
+3. **206 Partial Content**
+
+![http-status-206](./images/http-status-206.jpg)
+
+### 3XX 重定向
+
+    3XX 响应结果表明浏览器需要执行某些特殊的处理以正确处理请求。    
+
+1. **301 Moved Permanently**
+
+![http-status-301](./images/http-status-301.jpg)
+
+2. **302 Found**
+
+![http-status-302](./images/http-status-302.jpg)
+
+3. **303 See Other**
+
+![http-status-303](./images/http-status-303.jpg)
+
+4. **304 Not Modified**
+
+![http-status-304](./images/http-status-304.jpg)
+
+> 附带条件的请求是指采用 GET 方法的请求报文中包含 If-Match，If-Modified-Since，If-None-Match，If-Range，If-Unmodified-Since 中任一首部
+
+### 4XX 客户端错误
+
+    4XX 的响应结果表明客户端是发生错误的原因所在。
+
+1. **400 Bad Request**
+
+![http-status-400](./images/http-status-400.jpg)
+
+2. **401 Unauthorized**
+
+![http-status-401](./images/http-status-401.jpg)
+
+3. **403 Forbidden**
+
+![http-status-403](./images/http-status-403.jpg)
+
+4. **404 Not Found**
+
+![http-status-404](./images/http-status-404.jpg)
+
+### 5XX 服务器错误
+
+    5XX 的响应结果表明服务器本身发生错误。
+
+1. **500 Internal Server Error**
+
+![http-status-500](./images/http-status-500.jpg)
+
+2. **503 Service Unavailable**
+
+![http-status-503](./images/http-status-503.jpg)
+
+> **状态码和状况的不一致**
+> 
+> 不少返回的状态码响应都是错误的，但是用户可能察觉不到这点。比如 Web 应用程序内部发生错误，状态码依然返回 200 OK，这种情况也经常遇到。
