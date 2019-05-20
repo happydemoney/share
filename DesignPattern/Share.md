@@ -49,6 +49,33 @@ SPA
 
 ## 类库或框架中的设计模式介绍
 
+1. jQuery迭代器
+
+```javascript
+$.each = function( obj, callback ) {
+    var value,
+        i = 0,
+        length = obj.length,
+        isArray = isArraylike( obj );
+    if ( isArray ) { // 迭代类数组
+        for ( ; i < length; i++ ) {
+            value = callback.call( obj[ i ], i, obj[ i ] );
+            if ( value === false ) {
+                break;
+            }
+        }
+    } else {
+        for ( i in obj ) { // 迭代 object 对象
+            value = callback.call( obj[ i ], i, obj[ i ] );
+            if ( value === false ) {
+                break;
+            }
+        }
+    }
+    return obj;
+};
+```
+
 ## 设计模式
 
 1. 设计原则
@@ -76,10 +103,8 @@ SPA
     |英文名称|中文名称|介绍|
     |:---:|:---|:---:|
     | Singleton |单例模式|保证一个类只有一个实例，并提供一个访问它的全局访问点|
-    | Abstract Factory |抽象工厂|提供一个创建一系列相关或相互依赖对象的接口，而无须指定它们的具体类。|
-    | Factory Method |工厂方法|定义一个用于创建对象的接口，让子类决定实例化哪一个类，Factory Method使一个类的实例化延迟到了子类|
-    | Builder |建造模式|将一个复杂对象的构建与他的表示相分离，使得同样的构建过程可以创建不同的表示|
     | Prototype |原型模式|用原型实例指定创建对象的种类，并且通过拷贝这些原型来创建新的对象。|
+
     * 结构型
 
     |英文名称|中文名称|介绍|
@@ -92,9 +117,6 @@ SPA
     | Strategy | 策略模式 | 定义一系列的算法，把他们一个个封装起来，并使他们可以互相替换，本模式使得算法可以独立于使用它们的客户 |
     | Chain of Responsibility | 职责链模式 | 使多个对象都有机会处理请求，从而避免请求的送发者和接收者之间的耦合关系 |
     | Mediator | 中介者模式 | 用一个中介对象封装一些列的对象交互 |
-    | Visitor | 访问者模式 | 表示一个作用于某对象结构中的各元素的操作，它使你可以在不改变各元素类的前提下定义作用于这个元素的新操作 |
-    | Interpreter | 解释器模式 | 给定一个语言，定义他的文法的一个表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子 |
-    | Memento | 备忘录模式 | 在不破坏对象的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态 |
 
     * 行为型
 
@@ -105,7 +127,6 @@ SPA
     | Proxy | 代理模式 | 为其他对象提供一种代理以控制对这个对象的访问 |
     | Adapter | 适配器模式 | 将一类的接口转换成客户希望的另外一个接口，Adapter模式使得原本由于接口不兼容而不能一起工作那些类可以一起工作 |
     | Decrator | 装饰模式 | 动态地给一个对象增加一些额外的职责，就增加的功能来说，Decorator模式相比生成子类更加灵活 |
-    | Bridge | 桥模式 | 将抽象部分与它的实现部分相分离，使他们可以独立的变化 |
     | Flyweight | 享元模式 | 一种用于性能优化的模式，“fly”在这里是苍蝇的意思，意为蝇量级。享元模式的核心是运用共享技术来有效支持大量细粒度的对象 |
 
 ## 具体设计模式详细介绍
@@ -128,28 +149,6 @@ SPA
     ```javascript
     // 内部迭代器 - 内部已经定义好了迭代规则，它完全接手整个迭代过程，外部只需要一次初始调用
     // jQuery迭代函数each
-    $.each = function( obj, callback ) {
-        var value,
-            i = 0,
-            length = obj.length,
-            isArray = isArraylike( obj );
-        if ( isArray ) { // 迭代类数组
-            for ( ; i < length; i++ ) {
-                value = callback.call( obj[ i ], i, obj[ i ] );
-                if ( value === false ) {
-                    break;
-                }
-            }
-        } else {
-            for ( i in obj ) { // 迭代 object 对象
-                value = callback.call( obj[ i ], i, obj[ i ] );
-                if ( value === false ) {
-                    break;
-                }
-            }
-        }
-        return obj;
-    };
     // 外部迭代器 - 外部迭代器必须显式地请求迭代下一个元素
     var Iterator = function( obj ){
         var current = 0;
