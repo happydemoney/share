@@ -4,32 +4,66 @@
 
 1. 直接DOM操作时代
 
-    代表：jQuery、prototype、motools等
+| 类型 | 方法 |
+| --- | --- |
+| 节点查询型 | getElememtById |
+| 节点创建型 | createElement |
+| 节点修改型 | appendChild |
+| 节点关系型 | parentNode |
+| 节点属性型 | innerHtml |
+| 内容加载型 | XMLHttpRequest |
+
+    库代表：jQuery、prototype、motools等
 
 后两者一开始就实现了类的设计模式而且API的使用不太方便，相反jQuery以其简单友好的API和书写方式得到了广大开发者的认可
 
 jQuery主要实现了选择器、DOM操作方法、事件绑定封装、AJAX、Deferred这个五个方面的封装和常见的兼容性问题的处理。除此之外，我们还可以基于jQuery扩展更多的方法功能来提高业务开发效率。
 
-SPA
+随着AJAX的盛行，SPA应用开始被广泛认可。SPA的思路是将整个应用的内容都在一个页面中实现并完全通过异步交互来根据用户操作加载不同的内容。这样，使用jQuery直接进行DOM交互的开发方式就显得不易管理。
 
 2. MV*交互模式
 
 * 前端MVC模式（Model-View-Controller）
 
-    成熟的MVC框架一般是通过事件监听或观察者模式来实现的。
-    实现：Backbone.js
-
+    1. M - 存放请求的数据结果和数据对象
+    2. V - 页面DOM的更新和修改
+    3. C - 根据前端路由条件来调用不同Model给View渲染不同的内容
+    4. 以 Backbone.js 为例。
+    ![mvc](./image/mvc.png)
+    ```
+    1. 用户可以向 View 发送指令（DOM 事件），再由 View 直接要求 Model 改变状态。
+    2. 用户也可以直接向 Controller 发送指令（改变 URL 触发 hashChange 事件），
+    再由 Controller 发送给 View。
+    3. Controller 非常薄，只起到路由的作用，而 View 非常厚，业务逻辑都部署在 View。
+    所以，Backbone 索性取消了 Controller，只保留一个 Router（路由器） 。
+    ```
+    
 * 前端MVP模式（Model-View-Presenter）
+
+        MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。
+    ![mvp](./image/mvp.png)
+    ```
+    1. 各部分之间的通信，都是双向的。
+    2. View 与 Model 不发生联系，都通过 Presenter 传递。
+    3. View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），
+    即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。
+    ```
 
 * 前端MVVM模式（Model-View-ViewModel）
 
-    可以认为是自动化的MVP框架
+        可以认为是自动化的MVP框架
+        MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。
+        唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel，反之亦然。
+        Angular 和 Ember 都采用这种模式。
+    ![mvvm](./image/mvvm.png)
 
-    * 数据变更检测示例
+    MVVM设计的一个很大的好处是将MVP中的Presenter的工作拆分成多个小的指令步骤，然后绑定到相对应的的元素中，根据相对应的数据变化来驱动，自动管理交互操作，同时也免去了查看Presenter中事件列表的工作，而且一般ViewModel初始化时会自动进行数据绑定，并将页面中所有的同类操作复用,大大节省了我们自己去进行内容渲染和事件绑定的代码量。
+
+    * ViewModel数据变更检测方案
 
         1. 手动触发绑定
 
-            监听dom事件
+            监听dom事件，比如表单元素的keyup、change、select等事件
 
         2. 脏检测机制
 
@@ -51,44 +85,9 @@ SPA
     react-native（基于react - facebook）
     weex（基于vue - alibaba）
 
-## 类库或框架中的设计模式介绍
-
-1. jQuery迭代器
-
-```javascript
-$.each = function( obj, callback ) {
-    var value,
-        i = 0,
-        length = obj.length,
-        isArray = isArraylike( obj );
-    if ( isArray ) { // 迭代类数组
-        for ( ; i < length; i++ ) {
-            value = callback.call( obj[ i ], i, obj[ i ] );
-            if ( value === false ) {
-                break;
-            }
-        }
-    } else {
-        for ( i in obj ) { // 迭代 object 对象
-            value = callback.call( obj[ i ], i, obj[ i ] );
-            if ( value === false ) {
-                break;
-            }
-        }
-    }
-    return obj;
-};
-```
-
 ## 设计模式
 
 1. 设计原则
-
-    S(单一职责原则)
-    O(开放-封闭原则)
-    L(Liskov（里氏）替换原则)
-    I(接口隔离原则)
-    D(依赖倒转原则)
 
     * 单一职责原则
         
@@ -154,7 +153,7 @@ result
     |英文名称|中文名称|介绍|
     |:---:|:---|:---:|
     | Factory |工厂模式| 包含工厂方法、抽象工厂、建造模式 |
-    | Singleton |单例模式|保证一个类只有一个实例，并提供一个访问它的全局访问点（例如jQuery里的$，vuex里的store，window对象等）|
+    | Singleton |单例模式|保证一个类只有一个实例，并提供一个访问它的全局访问点（例如vuex里的store，window对象等）|
     | Prototype |原型模式|用原型实例指定创建对象的种类，并且通过拷贝这些原型来创建新的对象。|
 
     * 结构型
@@ -292,23 +291,87 @@ result
     特别是有多个发布者和订阅者嵌套到一起的时候，要跟踪一个 bug 不是件轻松的事情
     ```
 
-3. 迭代器模式
+3. 单例模式
+
+    * 介绍
+    ```
+    系统中被唯一使用
+    一个类只有一个实例
+    ```
+    * 示例
+    ```
+    登录框
+    购物车
+    ```
+    * 演示
+    ```javascript
+    // 面向对象方式
+    class SingleWM{
+        login(){
+            console.log('login')
+        }
+    }
+    SingleWM.getInstance = function(){
+        let instance
+        return function(){
+            if(!instance){
+                instance = new SingleWM()
+            }
+            return instance
+        }
+    }
+    // 通用的惰性单例模式 - 函数方式
+    const getSingle = function(fn){
+        let result
+        return function(){
+            return result || (result = fn.apply(this, arguments))
+        }
+    }
+    ```
+    * 场景
+
+    * 总结
+
+
+4. 迭代器模式
 
     * 内部迭代器与外部迭代器
 
     ```javascript
     // 内部迭代器 - 内部已经定义好了迭代规则，它完全接手整个迭代过程，外部只需要一次初始调用
     // -- jQuery迭代函数each
+    $.each = function( obj, callback ) {
+        var value,
+            i = 0,
+            length = obj.length,
+            isArray = isArraylike( obj );
+        if ( isArray ) { // 迭代类数组
+            for ( ; i < length; i++ ) {
+                value = callback.call( obj[ i ], i, obj[ i ] );
+                if ( value === false ) {
+                    break;
+                }
+            }
+        } else {
+            for ( i in obj ) { // 迭代 object 对象
+                value = callback.call( obj[ i ], i, obj[ i ] );
+                if ( value === false ) {
+                    break;
+                }
+            }
+        }
+        return obj;
+    };
     // 外部迭代器 - 外部迭代器必须显式地请求迭代下一个元素
-    var Iterator = function( obj ){
-        var current = 0;
-            var next = function(){
+    const Iterator = function( obj ){
+        let current = 0;
+        const next = function(){
             current += 1;
         };
-        var isDone = function(){
+        const isDone = function(){
             return current >= obj.length;
         };
-        var getCurrItem = function(){
+        const getCurrItem = function(){
             return obj[ current ];
         };
         return {
@@ -318,6 +381,86 @@ result
         }
     };
     ```
+5. 装饰模式
+
+    * 介绍
+
+    为对象添加新功能
+    不改变其原有的结构和功能
+    * 示例
+
+    手机壳
+    * 演示
+
+    ![UML-decorator](./image/UML-decorator.png)
+    ```javascript
+    // 实现一
+    class Circle {
+        draw() {
+            console.log('画一个圆')
+        }
+    }
+    class Decorator {
+        constructor(circle){
+            this.circle = circle
+        }
+        draw() {
+            this.circle.draw()
+            this.setRedBorder(circle)
+        }
+        setRedBorder() {
+            console.log('设置红色边框')
+        }
+    }
+
+    // 测试代码
+    let circle = new Circle()
+    circle.draw()
+
+    let decorator = new Decorator(circle)
+    decorator.draw()
+
+    // 实现二
+    // AOP - 面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。
+    Function.prototype.before = function(fn){
+        const _self = this
+        return function(){
+            fn.apply(this, arguments)
+            return _self.call(this, arguments)
+        }
+    }
+    // test
+    const _submit = function(){
+        console.log('form submit')
+    }
+    const submit = _submit.before(function(){
+        console.log('validate')
+    })
+    submit()
+
+    // 不污染原型方式
+    const before = function(fn, beforeFn){
+        return function(){
+            beforeFn.apply(this,arguments)
+            return fn.apply(this,arguments)
+        }
+    }
+    // test
+    const _submit = function(){
+        console.log('form submit')
+    }
+    const submit = before(_submit, function(){
+        console.log('validate')
+    })
+    submit()
+
+    // 
+    ```
+    * 场景
+
+    插件式表单校验
+    网站UV/PV统计
+    日志上报
 
 ## 自由讨论
 
