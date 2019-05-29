@@ -192,12 +192,17 @@ result
 1. 工厂模式
 
     * 介绍
+    ```
     将new单独封装
     遇到new时，就可以考虑是否使用该模式
+    ```
     * 示例
+    ```
     你去肯德基买汉堡，直接点餐、取餐，不会自己亲手做
     商店“封装”好做汉堡的工作，做好直接给买者
+    ```
     * 场景
+        
         1. jQuery - $('div')
 
             $('div')和new $('div')有撒区别
@@ -214,16 +219,22 @@ result
         3. vue异步组件
         ![vue-async](./image/vue-async.png)
     * 设计原则验证
+        ```
         构造函数和创造者分离
         符合开放封闭原则
+        ```
 
 2. 观察者模式
 
     * 介绍
+    ```
     发布 & 订阅
     一对多
+    ```
     * 示例
+    ```
     点咖啡，点好之后坐等服务员叫号
+    ```
     * UML类图和演示
     ![UML-observe](./image/UML-observe.png)
     ```javascript
@@ -267,15 +278,22 @@ result
     subject.setState(2)
     ```
     * 场景
+    
+    ```
     网页事件绑定
+    ```
     ![observe-example-1](./image/observe-example-1.png)
+    ```
     Promise
     vue和React组件生命周期触发
     vue父子组件通信
     vue watch
+    ```
     * 设计原则验证
+    ```
     主题和观察者分离，不是主动触发而是被动监听，两者解耦
     符合开放封闭原则
+    ```
     * 优缺点
     ```
     优点：发布—订阅模式的优点非常明显，一为时间上的解耦，二为对象之间的解耦。
@@ -384,12 +402,14 @@ result
 5. 装饰模式
 
     * 介绍
-
+    ```
     为对象添加新功能
     不改变其原有的结构和功能
+    ```
     * 示例
-
+    ```
     手机壳
+    ```
     * 演示
 
     ![UML-decorator](./image/UML-decorator.png)
@@ -457,10 +477,11 @@ result
     // 
     ```
     * 场景
-
+    ```
     插件式表单校验
     网站UV/PV统计
     日志上报
+    ```
 
 ## 自由讨论
 
@@ -477,27 +498,15 @@ result
     强制自己写代码时模拟
 
 技术分享的的主题以及其他
+    
+    前端相关协议（HTTP、实时协议：websocket、Poll和Long poll、与native交互协议等）
+    浏览器运行机制（比如重排和重绘这个知识点）
+    前端的未来趋势（新的语言标准、新特性、web AR、图形技术啊等）
 
-* uncurrying (提取泛化 this 的过程)
-```javascript
-//  JavaScript 之父 Brendan Eich 在 2011 年发表的一篇 Twitter，下面列出的是一个实现方式
-Function.prototype.uncurrying = function () {
-    var self = this;
-    return function() {
-        var obj = Array.prototype.shift.call( arguments );
-        return self.apply( obj, arguments );
-    };
-};
-// 示例
-const push = Array.prototype.push.uncurrying();
-(function(){
-    push( arguments, 4 );
-    console.log( arguments ); // 输出： [1, 2, 3, 4]
-})( 1, 2, 3 );
-```
 ## 资源分享
 
 1. [MVC，MVP 和 MVVM 的图示](http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html)
+2. [Javascript设计模式与开发实践](https://github.com/xingbofeng/JavaScript-design-patterns)
 
 ## 思考题
 * 某打车平台面试题
