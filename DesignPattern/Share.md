@@ -204,12 +204,14 @@ result
     * 场景
         
         1. jQuery - $('div')
-
-            $('div')和new $('div')有撒区别
-            一、书写麻烦，jQuery链式操作成为噩梦
-            二、一旦jQuery（构造函数）名字变化，将是灾难性的
+        ```
+        $('div')和new $('div')有撒区别
+        一、书写麻烦，jQuery链式操作成为噩梦
+        二、一旦jQuery（构造函数）名字变化，将是灾难性的
+        ```
         ![jQuery-constructor](./image/jquery-constructor.png)
         2. React.createElement
+        
         JSX语法：
         ![react-createE1](./image/react-createE1.png)
         JSX编译后：
@@ -510,6 +512,8 @@ result
 
 ## 思考题
 * 某打车平台面试题
+    
+    ```
     题：
     打车时，可以打专车和快车。任何车都有车牌号和名称
     不同车价格不同，快车每公里1元，专车每公里2元
@@ -518,7 +522,7 @@ result
     问：
     画出UML类图
     用ES6语法写出该示例
-
+    ```
 ```javascript
 // 父类 - 车
 class Car {
