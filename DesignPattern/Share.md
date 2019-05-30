@@ -29,6 +29,7 @@ jQuery主要实现了选择器、DOM操作方法、事件绑定封装、AJAX、D
     2. V - 页面DOM的更新和修改
     3. C - 根据前端路由条件来调用不同Model给View渲染不同的内容
     4. 以 Backbone.js 为例。
+    
     ![mvc](./image/mvc.png)
     ```
     1. 用户可以向 View 发送指令（DOM 事件），再由 View 直接要求 Model 改变状态。
