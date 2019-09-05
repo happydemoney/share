@@ -36,11 +36,13 @@ export default {
     }
 }
 ```
-data 中的 label 是面板显示的内容,value 是它对应的值,children 是它的子集，可递归 。 v-model绑定一个数组，每一项对应 data 里的value
+data 中的label是面板显示的内容,value 是它对应的值,children是它的子集，可递归。
+v-model绑定一个数组，每一项对应 data 里的value
 
 ##  组件API定义
 
-开发一个通用组件最重要的是定义 APL Vue 组件的 API 来的部分：prop、slot 和 event。
+开发一个通用组件最重要的是定义 API；
+Vue 组件的 API 来的部分：prop、slot 和 event。
 
 API 决定了一个组件的所有功能，而且作为对外提供的组件，一旦 API 确定好后，如果再选代更新，用户的代价就会很高，因为他们已经在业务中使用你的组件，改动太多意味着所有用到的地方都需要改动，所以组件库更新分兼容更新和不兼容更新，不是迫不得已，最好后续的更新都是兼容性的，这对使用者会很友好。
 
@@ -111,7 +113,7 @@ export default {
 }
 </script>
 ```
-Cascader 的核心是用到了组件递归,使用组件递归必不可少的两个条件是有 name 选项和在适当 的时候结束递归。
+Cascader 的核心是用到了组件递归,使用组件递归必不可少的两个条件是有 name 选项和在适当的时候结束递归。
 
 级联选择面板每一列都是一个组件 Caspanel (caspanel.vue),data 中的 children 决定了每项的子集，也就是需要递归显示Caspanel 的数量。
 
@@ -168,13 +170,13 @@ Cascader 的核心是用到了组件递归,使用组件递归必不可少的两�
 递归的 Caspanel 的 data 使用，以此类推。若该项没有 children，说明它是级联选择的最后一项，
 则点击直接结束选择，同时结束 Caspanel 的递归。
 
-最里层的组件是 Casitem， 就是每列的每项，它的作用就是把 data 或 children 的每个 label 显
-示出来。
+最里层的组件是 Casitem， 就是每列的每项，它的作用就是把 data 或 children 的每个 label 显示出来。
 
 Caseader 的基本构成就是上述的 3 部分： cascader.vue 、 caspanel.vue 和 casitem.vue 。 cascader.vue
-又分成两部分 ： 只读输入框（ Input）和下拉菜单（ Drop ） ， 在下拉菜单中使用第一个 Caspanel,
-开始递归每一列。 cascader.vue 的 template 代码为：
+又分成两部分 ：只读输入框（ Input）和下拉菜单（ Drop ），在下拉菜单中使用第一个 Caspanel,
+开始递归每一列。 
 
+cascader.vue 的 template 代码为：
 ```javascript
 // cascader.vue
 <template>
@@ -292,10 +294,11 @@ Caseader 的基本构成就是上述的 3 部分： cascader.vue 、 caspanel.vu
 
 ##  slot
 
-Input ( i-input）组件崔默认的 slot 内， 这意味着你可以自定义触发器部分，不局限于使用输入
-框，这让 Cascader 使用更灵活。使用 slot 时， 需要自己渲染显示的内容，所以提供了事件 on-change,
-在选择完成时触发，返回 value 和 selectedData，分别为己选值和己选项的具体数据。示例代码如下 ：
+Input ( i-input）组件写在默认的 slot 内， 这意味着你可以自定义触发器部分，不局限于使用输入框，这让 Cascader 使用更灵活。
+使用 slot 时，需要自己渲染显示的内容，所以提供了事件 on-change,在选择完成时触发，返回 value 和 selectedData，
+分别为己选值和己选项的具体数据。
 
+示例代码如下 ：
 ```javascript
 <template>
     {{text ))
@@ -325,6 +328,7 @@ export default{
 ##  event
 
 ![Cascader 各个组件之间的通信关系](./images/Cascader通信.jpg)
+
 Cascader 各个组件之间的通信关系
 
 在 Vue2 里 ， 组件间通信可以通过$emit、 bus、vuex来实现。但是iView作为独立组件，无法使用 bus 和 vuex，为了实现跨组件通信，iView 模拟了 Vue 1 的 dispatch 和 broadcast 方法。 
@@ -369,11 +373,10 @@ export default {
 
 emitter.js使用递归向上或向下的方式查找指定的组件名称（ name ），找到后触发$emit 。有了 emitter.js就可以自由的跨组件通信了。
 
-在初始化时（ mounted ) , Cascader 需要判断是否已经设置了选中值，若设置了，则所有的 Caspanel 和 Casitern 更新选中状态。这个过程是在Cascader 使用 broadcast 通知 Caspanel ，然后递归通知附属的 Caspanel同理，当从父组件修改 value时，也执行检查（即updateSelected 方法）。在点击 Casitern 时，使用 dispatch 通知Cascader 来更新在输入框中的选中值 ， 这样基本就形成了一个闭环。
+在初始化时（ mounted ) , Cascader 需要判断是否已经设置了选中值，若设置了，则所有的 Caspanel 和 Casitern 更新选中状态。这个过程是在Cascader 使用 broadcast 通知 Caspanel ，然后递归通知附属的 Caspanel同理，当从父组件修改 value时，也执行检查（即updateSelected 方法）。在点击 Casitem 时，使用 dispatch 通知Cascader 来更新在输入框中的选中值 ， 这样基本就形成了一个闭环。
 
 
 通信相关的代码：
-
 ```javascript
 // cascader.vue
 <script>
@@ -607,7 +610,3 @@ export default {
 ```
 
 独立组件与业务组件最大的不同是，业务组件往往针对数据的获取、整理、可视化，逻辑清晰简单，可以使用vuex：而独立组件的复杂度更多集中在细节、交互、性能优化、API设计上，对原生 JavaScript 有一定考验。
-
-在使用过程中，可能会有新功能的不断添加，也会发现隐藏的 bug,所以独立组件一开始逻辑和代码量并不复杂，多次选代后会越来越冗长，当然功能也更丰富，使用更稳定。
-
-万事开头难，组件 API 的设计和可扩展性决定了组件迭代的复杂性。一开始不可能考虑到所有的细节，但是整体架构要清晰可扩展，否则很有可能重构。
