@@ -1,0 +1,93 @@
+{
+  "id": "1445505",
+  "name": "oview",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "oView项目相关图标组",
+  "glyphs": [
+    {
+      "icon_id": "11132207",
+      "name": "arrow-left",
+      "font_class": "arrow-left",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "11132208",
+      "name": "arrow-down",
+      "font_class": "arrow-down",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "11132210",
+      "name": "arrow",
+      "font_class": "arrow",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "11132215",
+      "name": "arrow-up",
+      "font_class": "arrow-up",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "11132272",
+      "name": "eye",
+      "font_class": "eye",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "11132291",
+      "name": "friends",
+      "font_class": "friends",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    },
+    {
+      "icon_id": "11132312",
+      "name": "info",
+      "font_class": "info",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "11132325",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "11132366",
+      "name": "plus",
+      "font_class": "plus",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "11132367",
+      "name": "question",
+      "font_class": "question",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "11132398",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "11132421",
+      "name": "star",
+      "font_class": "star",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    }
+  ]
+}
