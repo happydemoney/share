@@ -1,13 +1,16 @@
 import './styles/index.scss' // 样式文件
+import Icon from './components/icon'
 import Card from './components/card'
 
 const components = {
+    Icon,
     Card
 }
 
 const oview = {
     ...components,
-    oCard: Card
+    oCard: Card,
+    oIcon: Icon
 }
 
 const install = function(Vue) {
