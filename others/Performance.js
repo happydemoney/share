@@ -7,38 +7,13 @@ function MyPerformance () {}
 
 MyPerformance.prototype = {
   init: function () {
-    // 监控history基础上实现的单页路由中url的变化
-    const _wr = function (type) {
-      const orig = window.history[type]
-      return function () {
-        const rv = orig.apply(this, arguments)
-        const e = new Event(type)
-        e.arguments = arguments
-        window.dispatchEvent(e)
-        return rv
-      }
-    }
     const interval = setInterval(() => {
+      // 页面所有内容都已被完全加载
       if (document.readyState === 'complete') {
         this.getPerformanceTiming()
         clearInterval(interval)
       }
     }, 2000)
-    window.history.pushState = _wr('pushState')
-    // window.history.replaceState = _wr('replaceState')
-    // window.addEventListener('replaceState', (e) => {
-    //   console.log('replaceState')
-    // })
-    window.addEventListener('pushState', (e) => {
-      // ...deal with something
-      const interval = setInterval(() => {
-        if (document.readyState === 'complete') {
-          console.clear()
-          this.getEnteriesTime()
-          clearInterval(interval)
-        }
-      }, 1000)
-    })
   },
   // 获取数据信息
   getPerformanceTiming: function () {
@@ -51,9 +26,16 @@ MyPerformance.prototype = {
     }
     // 获取解析后的数据
     this.afterDatas.timingFormat = this._setTiming()
-    console.clear()
+    // console.clear()
     this._showTiming()
     this.getEnteriesTime()
+    // 性能观察者
+    const observer = new PerformanceObserver((list, obj) => {
+      const entries = list.getEntries()
+      this.showEntriesInfo(entries)
+    })
+    // entryTypes - https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType
+    observer.observe({ entryTypes: ['resource'] })
   },
   getEnteriesTime () {
     this.afterDatas.enteriesResouceDataFormat = this._setEnteries()
@@ -88,7 +70,8 @@ MyPerformance.prototype = {
       '请求完毕到DOM加载耗时': formatMs(timing.domInteractive - timing.responseEnd),
       // '解析DOM树耗时': formatMs(timing.domComplete - timing.domInteractive),
       '首字节等待时长': formatMs(timing.responseStart - timing.navigationStart), // Time to first Byte, TTFB - 用于衡量网络链路和服务器响应性能
-      '白屏时间耗时': formatMs(timing.domLoading - timing.fetchStart),
+      '白屏时间耗时': formatMs(timing.domLoading - timing.fetchStart), // 白屏时间 ：responseStart - navigationStart
+      '白屏时间耗时2': formatMs(timing.responseStart - timing.navigationStart), // 白屏时间 ：responseStart - navigationStart
       // '卸载页面的时间': formatMs(timing.unloadEventEnd - timing.unloadEventStart),
       '用户可交互时间': formatMs(timing.domContentLoadedEventEnd - timing.navigationStart),
       // 'domReadyTime': formatMs(timing.domContentLoadedEventEnd - timing.fetchStart),
@@ -113,6 +96,22 @@ MyPerformance.prototype = {
     }
     return data
   },
+  showEntriesInfo (entries) {
+    const arr = []
+    entries.map(item => {
+      const d = {
+        '资源名称': item.name,
+        'HTTP协议类型': item.nextHopProtocol,
+        // '重定向时间': formatMs(item.redirectEnd - item.redirectStart),
+        // 'dns查询耗时': formatMs(item.domainLookupEnd - item.domainLookupStart),
+        // 'TCP连接耗时': formatMs(item.connectEnd - item.connectStart),
+        '请求时间': formatMs(item.responseEnd - item.fetchStart),
+        '加载时间': formatMs(item.duration)
+      }
+      arr.push(d)
+    })
+    console.table(arr)
+  },
   _setEnteries: function () {
     // const enteriesResouceData = window.performance.getEntriesByType('resource')
     // const resourceTypeList = ['navigation', 'script', 'css', 'fetch', 'xmlhttprequest', 'link', 'img']
@@ -125,7 +124,6 @@ MyPerformance.prototype = {
     // const linkArrs = []
     const imgArrs = []
     enteriesResouceData.map(item => {
-      // console.log(item)
       const d = {
         '资源名称': item.name,
         'HTTP协议类型': item.nextHopProtocol,
