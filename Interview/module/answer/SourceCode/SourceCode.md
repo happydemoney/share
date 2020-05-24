@@ -179,15 +179,98 @@ obj.toString.MyApply(obj2, [1, 2, 3]) // 3
 2. 怎么实现 this 指向改变？
 3. 怎么实现构造函数原型属性和方法的使用
 
+```javascript
+// 对象有__proto__属性，函数有prototype属性
+// 对象由函数生成;
+// 生成对象时，对象的__proto__属性指向函数的prototype属性
+function myNew (fn, ...args) {
+    let obj = {}
+    // 1. 直接将obj的原型对象直接fn的原型
+    // obj.__proto__ = fn.prototype
+    // 2. 使用object.create
+    obj = Object.create(fn.prototype)
+    let result = fn.apply(obj, ...args)
+    if ((result && typeof result === 'object') || typeof result === 'function') {
+        return result
+    }
+    return obj
+}
+// mynew
+const arr = myNew(Array)
+arr instanceof Array // true
+
+// source
+const arr = new Array()
+arr instanceof Array // true
+```
+
 ##  手写源码 - instanceof
 
 1. instanceof 原理?
 2. 怎么遍历左侧对象的原型链是关键点?
 
+```javascript
+
+function InstanceOf (src, target) {
+    let srcProto = src.__proto__
+    const targetPrototype = target.prototype
+    while (true) {
+        if (srcProto === null) {
+            return false
+        }
+        if (srcProto === targetPrototype) {
+            return true
+        }
+        srcProto = srcProto.__proto__
+    }
+}
+
+const arr = new Array()
+InstanceOf(arr, Array)
+
+```
+
 ##  手写源码 - 深拷贝(deep copy)
 
 1. 什么是深拷贝?
 2. 怎么样才能全部拷贝?
+
+```javascript
+function deepCopy (target) {
+    let result
+    if (typeof target === 'object') {
+        if (Array.isArray(target)) {
+            result = []
+            for (let i = 0; i < target.length; i ++) {
+                result.push(deepCopy(target[i]))
+            }
+        } else if (target === null) {
+            result = null
+        } else if (target instanceof RegExp) {
+            result = target
+        } else {
+            result = {}
+            for (let key in target) {
+                result[key] = deepCopy(target[key])
+            }
+        }
+    } else {
+        result = target
+    }
+    return result
+}
+
+// test
+const obj = {
+    o: { a: 1 },
+    b: 2,
+    j: [1, 2, 3]
+}
+const obj2 = deepCopy(obj)
+obj2.o.a = 2
+console.log(obj2)
+console.log(obj)
+```
 
 扩展：利用JSON的方法实现简单的深拷贝
 ```
