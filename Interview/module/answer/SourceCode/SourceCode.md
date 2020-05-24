@@ -10,13 +10,64 @@
 
 扩展：如何取消 promise
 
-[Answer](./answer/SourceCode/SourceCode.md)
-
 ##  手写源码 - 防抖节流
 
 1. 防抖和节流区别
+
+    防抖(debounce): 触发高频事件后 n 秒内函数只会执行一次,如果 n 秒内高频事件再次被触发,则重新计算时间
+
+    节流(throttle): 高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。
+
 2. 防抖怎么保证
 3. 节流怎么保证
+
+```javascript
+// debounce
+function debounce (fn, delay, immediate = false) {
+    let _timer = null
+    let execFlag = true
+    return function () {
+        if (_timer) {
+            clearTimeout(_timer)
+        }
+        if (immediate && execFlag) {
+            fn.apply(this, arguments)
+            execFlag = false
+        }
+        _timer = setTimeout(() => {
+            if (immediate) {
+                execFlag = true
+            } else {
+                fn.apply(this, arguments)
+            }
+        }, delay)
+    }
+}
+// throttle
+// 1. status
+function throttle (fn, delay) {
+    let execFlag = true
+    return function () {
+        if (!execFlag) return
+        execFlag = false
+        fn.apply(this, arguments)
+        setTimeout(function () {
+            execFlag = true
+        }, delay)
+    }
+}
+// 2. timestamp
+function throttle (fn, delay) {
+    let startTime = new Date().getTime()
+    return function () {
+        let endTime = new Date().getTime()
+        if (endTime - startTime >= delay) {
+            fn.apply(this, arguments)
+            startTime = endTime
+        }
+    }
+}
+```
 
 ##  手写源码 - EventEmitter(发布订阅模式--简单版)
 
@@ -59,4 +110,3 @@ let targetObj = JSON.parse(JSON.stringify(sourceObj))
 ##  手写源码 - 实现一个继承
 
 ##  手写源码 - 实现一个JS函数柯里化 
-

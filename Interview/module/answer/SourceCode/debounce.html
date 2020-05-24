@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+</head>
+<body>
+    <button onclick="commonClick('normal')">normal click</button>
+    <button onclick="_debounceClick('debounce')">debounce click</button>
+    <button onclick="_throttleClick('throttle')">throttle click</button>
+    <script>
+        function commonClick (arg = 'default') {
+            console.log(arg + ' click')
+        }
+        const _debounceClick = debounce(commonClick, 1000, true)
+        const _throttleClick = throttle(commonClick, 1000)
+        function debounce (fn, delay, immediate = false) {
+            let _timer = null
+            let execFlag = true
+            return function () {
+                if (_timer) {
+                    clearTimeout(_timer)
+                }
+                if (immediate && execFlag) {
+                    fn.apply(this, arguments)
+                    execFlag = false
+                }
+                _timer = setTimeout(() => {
+                    if (immediate) {
+                        execFlag = true
+                    } else {
+                        fn.apply(this, arguments)
+                    }
+                }, delay)
+            }
+        }
+        // function throttle (fn, delay) {
+        //     let execFlag = true
+        //     return function () {
+        //         if (!execFlag) return
+        //         execFlag = false
+        //         fn.apply(this, arguments)
+        //         setTimeout(function () {
+        //             execFlag = true
+        //         }, delay)
+        //     }
+        // }
+        function throttle (fn, delay) {
+            let startTime = new Date().getTime()
+            return function () {
+                let endTime = new Date().getTime()
+                if (endTime - startTime >= delay) {
+                    fn.apply(this, arguments)
+                    startTime = endTime
+                }
+            }
+        }
+    </script>
+</body>
+</html>
