@@ -10,6 +10,156 @@
 
 扩展：如何取消 promise
 
+```javascript
+// Promosie 使用示例
+const startTime = new Date().getTime()
+const promise1 = new Promise((resolve, reject) => {
+    console.log('do promise1 exector')
+    setTimeout(() => {
+        resolve('promise1 resolve')
+    }, 500)
+})
+
+const promise2 = new Promise((resolve, reject) => {
+    console.log('do promise2 exector')
+    setTimeout(() => {
+        resolve('promise2 resolve')
+    }, 300)
+})
+
+Promise.all([promise1, promise2])
+    .then(values => {
+        console.log(values)
+        console.log(new Date().getTime() - startTime)
+    })
+
+Promise.race([promise1, promise2])
+    .then(values => {
+        console.log(values)
+        console.log(new Date().getTime() - startTime)
+    })
+// do promise1 exector
+// do promise2 exector
+// 'promise2 resolve'
+// ['promise1 resolve', 'promise2 resolve']
+
+// MyPromise
+class MyPromise {
+    constructor (executor) {
+        this.status = 'pending'
+        this.fulfilledFunc = []
+        this.rejectedFunc = []
+        const resolve = args => {
+            if (this.status !== 'pending') {
+                return
+            }
+            this.status = 'fulfilled'
+            setTimeout(() => {
+                this.fulfilledFunc.forEach(item => item.call(this, args))
+            })
+        }
+        const reject = error => {
+            if (this.status !== 'pending') {
+                return
+            }
+            this.status = 'rejected'
+            setTimeout(() => {
+                this.rejectedFunc.forEach(item => item.call(this, error))
+            })
+        }
+        // do executor
+        try {
+            executor(resolve, reject)
+        } catch (error) {
+            reject(error)
+        }
+    }
+    then (onFulfilled, onRejected) {
+        onFulfilled = typeof onFulfilled !== 'function' ? args => args: onFulfilled
+        onRejected = typeof onRejected !== 'function' ? error => error: onRejected
+        return new MyPromise((resolve, reject) => {
+            // fulfilledFunc
+            this.fulfilledFunc.push(args => {
+                try {
+                    // do callback
+                    let val = onFulfilled(args)
+                    val instanceof MyPromise ? val.then(resolve, reject): resolve(val)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+            // rejectedFunc
+            this.rejectedFunc.push(args => {
+                try {
+                    // do callback
+                    let val = onRejected(args)
+                    val instanceof MyPromise ? val.then(resolve, reject): reject(val)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        })
+    }
+    catch (onRejected) {
+    }
+    finally (onFinally) {
+    }
+    static all (promiseArray) {
+        let count = 0
+        let result = []
+        return new MyPromise((resolve, reject) => {
+            for (let i = 0; i < promiseArray.length; i++) {
+                promiseArray[i].then(res => {
+                    result[i] = res
+                    count++
+                    if (count === promiseArray.length) {
+                        resolve(result)
+                    }
+                }, err => {
+                    reject(err)
+                })
+            }
+        })
+    }
+    static race (promiseArray) {
+        return new MyPromise((resolve, reject) => {
+            for (let i = 0; i < promiseArray.length; i++) {
+                promiseArray[i].then(res => {
+                    resolve(res)
+                }, err => {
+                    reject(err)
+                })
+            }
+        })
+    }
+}
+const promise1 = new MyPromise((resolve, reject) => {
+    console.log('do promise1 exector')
+    setTimeout(() => {
+        resolve('promise1 resolve')
+    }, 500)
+})
+
+const promise2 = new MyPromise((resolve, reject) => {
+    console.log('do promise2 exector')
+    setTimeout(() => {
+        resolve('promise2 resolve')
+    }, 300)
+})
+
+MyPromise.all([promise1, promise2])
+    .then(values => {
+        console.log(values)
+        console.log(new Date().getTime() - startTime)
+    })
+
+MyPromise.race([promise1, promise2])
+    .then(values => {
+        console.log(values)
+        console.log(new Date().getTime() - startTime)
+    })
+```
+
 ##  手写源码 - 防抖节流
 
 1. 防抖和节流区别
@@ -171,6 +321,7 @@ const obj2 = { x: 3 }
 obj.toString.apply(obj2, [1, 2, 3]) // 3
 obj.toString.MyApply(obj2, [1, 2, 3]) // 3
 // bind
+// https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
 ```
 
 ##  手写源码 - new 操作符
