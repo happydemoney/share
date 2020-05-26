@@ -322,6 +322,30 @@ obj.toString.apply(obj2, [1, 2, 3]) // 3
 obj.toString.MyApply(obj2, [1, 2, 3]) // 3
 // bind
 // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+Function.prototype.MyBind = function () {
+    const execFunc = this
+    const bindContext = arguments[0]
+    const bindArgs = [].slice.call(arguments)
+    return function () {
+        const execArgs = bindArgs.concat([].slice.call(arguments))
+        return execFunc.apply(bindContext, execArgs)
+    }
+}
+
+const module = {
+  x: 42,
+  getX: function() {
+    return this.x;
+  }
+};
+
+const unboundGetX = module.getX;
+console.log(unboundGetX()); // The function gets invoked at the global scope
+// expected output: undefined
+
+const boundGetX = unboundGetX.MyBind(module);
+console.log(boundGetX());
+// expected output: 42
 ```
 
 ##  手写源码 - new 操作符
