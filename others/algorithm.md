@@ -9,45 +9,62 @@
  * @param startIndex 起始下标
  * @param endIndex 结束下标
  */
-function partition (array, startIndex, endIndex) {
-    // 取第一个元素作为基准元素
-    let pivot = array[startIndex]
-    let left = startIndex
-    let right = endIndex
-    while (left !== right) {
-        // 控制right指针向左移
-        while (left < right && array[right] > pivot) {
-            right--
-        }
-        // 控制left指针向右移
-        while (left < right && array[left] <= pivot) {
-            left++
-        }
-        if (left < right) {
-            let temp = array[left]
-            array[left] = array[right]
-            array[right] = temp
-        }
+function partitionTwice (array, startIndex, endIndex) {
+  let pivot = array[startIndex]
+  let left = startIndex
+  let right = endIndex
+  while (left !== right) {
+    while (left < right && array[right] > pivot) {
+      right--
     }
-    // pivot和指针重合点交互
-    array[startIndex] = array[left]
-    array[left] = pivot
-    return left
+    while (left < right && array[left] <= pivot) {
+      left++
+    }
+    if (left < right) {
+      let temp = array[left]
+      array[left] = array[right]
+      array[right] = temp
+    }
+  }
+  array[startIndex] = array[left]
+  array[left] = pivot
+  return left
+}
+// 2. 单边循环法
+function partitionOne (array, startIndex, endIndex) {
+  let pivot = array[startIndex]
+  let mark = startIndex
+  // 从mark位置开始遍历
+  for (let i = startIndex + 1; i <= endIndex; i++) {
+    if (array[i] < pivot) {
+      mark++
+      let temp = array[i]
+      array[i] = array[mark]
+      array[mark] = temp
+    }
+  }
+  array[startIndex] = array[mark]
+  array[mark] = pivot
+  return mark
 }
 function QuickSort (...args) {
-    const array = args[0]
-    const startIndex = args[1] || 0
-    const endIndex = args[2] || array.length - 1
-    if (startIndex >= endIndex) {
-        return
-    }
-    const pivotIndex = partition(array, startIndex, endIndex)
-    // left loop
-    QuickSort(array, startIndex, pivotIndex - 1)
-    // right loop
-    QuickSort(array, pivotIndex + 1, endIndex)
+  const array = args[0]
+  const startIndex = args[1] || 0
+  const endIndex = args[2] || array.length - 1
+  if (startIndex >= endIndex) {
+    return
+  }
+  const pivot = partitionTwice(array, startIndex, endIndex)
+  if (startIndex < pivot - 1) {
+    QuickSort(array, startIndex, pivot - 1)
+  }
+  if (endIndex > pivot + 1) {
+    QuickSort(array, pivot + 1, endIndex)
+  }
 }
-const array = [1,3,2,6,4,5,9,8,7]
+const array = [1,2,4,3,6,5,7,9,8,10]
+// const array = [1,3,2,6,4,5,9,8,7]
+// const array = [4,4,6,5,3,2,8,1]
 QuickSort(array)
 console.log(array)
 ```
